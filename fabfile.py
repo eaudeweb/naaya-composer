@@ -6,9 +6,6 @@ env.use_ssh_config = True
 env.hosts = ['vagrant@192.168.13.29']
 
 
-LOCAL_ROOT = os.path.abspath(os.path.dirname(__file__))
-
-
 @task
 def shell():
     open_shell('cd /var/local/naaya')
@@ -29,6 +26,6 @@ def bootstrap():
 @task
 def deploy():
     with cd('/var/local/naaya'):
-        paths = put(os.path.join(LOCAL_ROOT, 'buildout') + '/*', '.')
+        paths = put('buildout/*', '.')
         run('bin/python bootstrap.py -d')
         run('bin/buildout')
