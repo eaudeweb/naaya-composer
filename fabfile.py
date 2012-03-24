@@ -11,6 +11,7 @@ def shell():
 
 
 def bootstrap():
+    sudo('apt-get install python-dev -y')
     sudo('apt-get install python-virtualenv -y')
     sudo('mkdir /var/local/naaya')
     sudo('chown vagrant: /var/local/naaya')
@@ -28,3 +29,7 @@ def bootstrap():
                    '/buildout/Naaya/zope212/' + name)
             run('curl -O ' + url)
         run('bin/python bootstrap.py -d')
+
+def buildout():
+    with cd('/var/local/naaya'):
+        run('bin/buildout')
