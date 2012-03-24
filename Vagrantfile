@@ -1,0 +1,11 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant::Config.run do |config|
+
+  config.vm.box = "lucid32"
+
+  config.vm.network :hostonly, "192.168.13.29"
+  # config.vm.network :bridged
+
+end
