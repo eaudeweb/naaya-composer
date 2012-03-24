@@ -23,11 +23,9 @@ def bootstrap():
         '--no-site-packages --distribute '
         '/var/local/naaya')
     sudo('apt-get install curl -y')
+
+def deploy():
     with cd('/var/local/naaya'):
         paths = put(os.path.join(LOCAL_ROOT, 'buildout') + '/*', '.')
-        print list(paths)
         run('bin/python bootstrap.py -d')
-
-def buildout():
-    with cd('/var/local/naaya'):
         run('bin/buildout')
