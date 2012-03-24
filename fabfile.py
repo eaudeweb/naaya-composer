@@ -11,7 +11,7 @@ LOCAL_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 
 def shell():
-    open_shell()
+    open_shell('cd /var/local/naaya')
 
 
 def bootstrap():
