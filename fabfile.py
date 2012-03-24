@@ -9,10 +9,12 @@ env.hosts = ['vagrant@192.168.13.29']
 LOCAL_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 
+@task
 def shell():
     open_shell('cd /var/local/naaya')
 
 
+@task
 def bootstrap():
     sudo('apt-get install python-dev -y')
     sudo('apt-get install python-virtualenv -y')
@@ -23,6 +25,8 @@ def bootstrap():
         '/var/local/naaya')
     sudo('apt-get install curl -y')
 
+
+@task
 def deploy():
     with cd('/var/local/naaya'):
         paths = put(os.path.join(LOCAL_ROOT, 'buildout') + '/*', '.')
