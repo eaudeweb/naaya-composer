@@ -1,9 +1,13 @@
+import os.path
 from fabric.api import env, cd
-from fabric.operations import open_shell, run, sudo
+from fabric.operations import open_shell, run, sudo, put
 
 
 env.use_ssh_config = True
 env.hosts = ['vagrant@192.168.13.29']
+
+
+LOCAL_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 
 def shell():
@@ -20,14 +24,8 @@ def bootstrap():
         '/var/local/naaya')
     sudo('apt-get install curl -y')
     with cd('/var/local/naaya'):
-        for name in ['bootstrap.py',
-                     'buildout.cfg',
-                     'naaya.cfg',
-                     'versions-zope-2.12.18.cfg',
-                     'versions.cfg']:
-            url = ('https://svn.eionet.europa.eu/repositories/Naaya'
-                   '/buildout/Naaya/zope212/' + name)
-            run('curl -O ' + url)
+        paths = put(os.path.join(LOCAL_ROOT, 'buildout') + '/*', '.')
+        print list(paths)
         run('bin/python bootstrap.py -d')
 
 def buildout():
