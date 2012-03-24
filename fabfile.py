@@ -1,6 +1,5 @@
 import os.path
-from fabric.api import env, cd
-from fabric.operations import open_shell, run, sudo, put
+from fabric.api import *
 
 
 env.use_ssh_config = True
