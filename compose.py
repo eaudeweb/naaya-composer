@@ -21,6 +21,14 @@ class Composer(object):
     def shell(self):
         open_shell("cd '%s'" % self.config['buildout_path'])
 
+    def bootstrap(self):
+        sudo("apt-get install -y python2.6-dev python-virtualenv curl")
+        sudo("mkdir '%(buildout_path)s'" % self.config)
+        sudo("chown vagrant: '%(buildout_path)s'" % self.config)
+        run("virtualenv -p python2.6 "
+            "--no-site-packages --distribute "
+            "%(buildout_path)s" % self.config)
+
     def run(self, tasks):
         self._configure()
         for task in tasks:
