@@ -1,0 +1,6 @@
+host:
+    vagrant@192.168.13.28
+buildout_path:
+    /var/local/naaya
+python_system_26:
+    true
