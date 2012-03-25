@@ -5,6 +5,9 @@ from path import path
 import yaml
 
 
+env.use_ssh_config = True
+
+
 class Composer(object):
 
     def __init__(self, root):
@@ -15,9 +18,12 @@ class Composer(object):
             self.config = yaml.load(f)
         env.hosts = [self.config['host']]
 
+    def shell(self):
+        open_shell("cd '%s'" % self.config['buildout_path'])
+
     def run(self):
         self._configure()
-        print "composing from %s" % self.root
+        execute(self.shell)
 
 
 def parse_args():
