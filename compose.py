@@ -22,7 +22,8 @@ class Composer(object):
         open_shell("cd '%s'" % self.config['buildout_path'])
 
     def bootstrap(self):
-        sudo("apt-get install -y python2.6-dev python-virtualenv curl")
+        if self.config['python_system_26']:
+            sudo("apt-get install -y python2.6-dev python-virtualenv")
         sudo("mkdir '%(buildout_path)s'" % self.config)
         sudo("chown vagrant: '%(buildout_path)s'" % self.config)
         run("virtualenv -p python2.6 "
