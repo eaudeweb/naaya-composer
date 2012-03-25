@@ -40,7 +40,11 @@ def parse_args():
 def main():
     args = parse_args()
     deployment_root = path(args.deployment).abspath()
-    Composer(deployment_root).run(args.tasks)
+    try:
+        Composer(deployment_root).run(args.tasks)
+    finally:
+        import fabric.network
+        fabric.network.disconnect_all()
 
 
 if __name__ == '__main__':
