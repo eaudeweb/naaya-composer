@@ -29,6 +29,12 @@ class Composer(object):
             "--no-site-packages --distribute "
             "%(buildout_path)s" % self.config)
 
+    def deploy(self):
+        with cd(self.config['buildout_path']):
+            paths = put('%s/buildout/*' % self.root, '.')
+            run('bin/python bootstrap.py -d')
+            run('bin/buildout')
+
     def run(self, tasks):
         self._configure()
         for task in tasks:
