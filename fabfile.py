@@ -13,14 +13,12 @@ def shell():
 
 @task
 def bootstrap():
-    sudo('apt-get install python-dev -y')
-    sudo('apt-get install python-virtualenv -y')
+    sudo('apt-get install -y python-dev python-virtualenv curl')
     sudo('mkdir /var/local/naaya')
     sudo('chown vagrant: /var/local/naaya')
     run('virtualenv -p python2.6 '
         '--no-site-packages --distribute '
         '/var/local/naaya')
-    sudo('apt-get install curl -y')
 
 
 @task
