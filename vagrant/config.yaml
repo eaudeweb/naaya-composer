@@ -1,0 +1,4 @@
+host:
+    vagrant@192.168.13.29
+buildout_path:
+    /var/local/naaya
