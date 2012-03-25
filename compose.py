@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
+from fabric.api import *
 from path import path
-import fabric
+import yaml
 
 
 class Composer(object):
@@ -9,7 +10,13 @@ class Composer(object):
     def __init__(self, root):
         self.root = root
 
+    def _configure(self):
+        with self.root.joinpath('config.yaml').open('rb') as f:
+            self.config = yaml.load(f)
+        env.hosts = [self.config['host']]
+
     def run(self):
+        self._configure()
         print "composing from %s" % self.root
 
 
