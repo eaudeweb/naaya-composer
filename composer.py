@@ -5,7 +5,14 @@ import yaml
 def composer_for_path(root):
     with root.joinpath('config.yaml').open('rb') as f:
         config = yaml.load(f)
-    return Composer(root, config)
+    if 'composer' in config:
+        [file_name, cls_name] = config['composer'].split(':')
+        module = {}
+        execfile(root.joinpath(file_name), module)
+        cls = module[cls_name]
+    else:
+        cls = Composer
+    return cls(root, config)
 
 
 class Composer(object):
