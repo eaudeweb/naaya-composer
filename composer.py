@@ -29,7 +29,7 @@ class Composer(object):
 
     def bootstrap(self):
         sudo("mkdir '%(buildout_path)s'" % self.config)
-        sudo("chown vagrant: '%(buildout_path)s'" % self.config)
+        sudo("chown %(unix-user)s: '%(buildout_path)s'" % self.config)
         run("virtualenv -p python2.6 "
             "--no-site-packages --distribute "
             "%(buildout_path)s" % self.config)
