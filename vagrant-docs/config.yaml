@@ -4,3 +4,5 @@ buildout_path:
     /var/local/naaya
 python_system_26:
     true
+composer:
+    docs_composer.py:DocsComposer
