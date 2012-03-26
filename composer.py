@@ -20,6 +20,7 @@ class Composer(object):
     def __init__(self, root, config):
         self.root = root
         self.config = config
+        self.config.setdefault('python-bin', 'bin/python')
 
     def shell(self):
         open_shell("cd '%s'" % self.config['buildout-path'])
@@ -34,8 +35,8 @@ class Composer(object):
     def deploy(self):
         with cd(self.config['buildout-path']):
             paths = put('%s/buildout/*' % self.root, '.')
-            run('bin/python bootstrap.py -d')
-            run('bin/buildout')
+            run("'%(python-bin)s' bootstrap.py -d" % self.config)
+            run("bin/buildout")
 
     def run(self, tasks):
         for task in tasks:
