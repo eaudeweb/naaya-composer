@@ -1,7 +1,7 @@
 host:
     edw@power.edw.ro
 buildout-path:
-    /var/lib/jenkins/jobs/naaya-docs/workspace
+    /var/lib/jenkins/jobs/Naaya-documentation/workspace
 python-bin:
     /usr/bin/python2.6
 unix-user:
