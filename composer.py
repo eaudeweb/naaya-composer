@@ -25,17 +25,17 @@ class Composer(object):
         env.hosts = [self.config['host']]
 
     def shell(self):
-        open_shell("cd '%s'" % self.config['buildout_path'])
+        open_shell("cd '%s'" % self.config['buildout-path'])
 
     def bootstrap(self):
-        sudo("mkdir '%(buildout_path)s'" % self.config)
-        sudo("chown %(unix-user)s: '%(buildout_path)s'" % self.config)
+        sudo("mkdir '%(buildout-path)s'" % self.config)
+        sudo("chown %(unix-user)s: '%(buildout-path)s'" % self.config)
         run("virtualenv -p python2.6 "
             "--no-site-packages --distribute "
-            "%(buildout_path)s" % self.config)
+            "%(buildout-path)s" % self.config)
 
     def deploy(self):
-        with cd(self.config['buildout_path']):
+        with cd(self.config['buildout-path']):
             paths = put('%s/buildout/*' % self.root, '.')
             run('bin/python bootstrap.py -d')
             run('bin/buildout')

@@ -1,6 +1,6 @@
 host:
     vagrant@192.168.13.28
-buildout_path:
+buildout-path:
     /var/local/naaya
 unix-user:
     vagrant
