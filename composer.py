@@ -21,9 +21,6 @@ class Composer(object):
         self.root = root
         self.config = config
 
-    def _configure(self):
-        env.hosts = [self.config['host']]
-
     def shell(self):
         open_shell("cd '%s'" % self.config['buildout-path'])
 
@@ -41,6 +38,5 @@ class Composer(object):
             run('bin/buildout')
 
     def run(self, tasks):
-        self._configure()
         for task in tasks:
-            execute(getattr(self, task))
+            execute(getattr(self, task), hosts=[self.config['host']])
