@@ -1,0 +1,8 @@
+host:
+    edw@power.edw.ro
+buildout-path:
+    /var/lib/jenkins/jobs/naaya-docs/workspace
+unix-user:
+    edw
+composer:
+    docs_composer.py:DocsComposer
