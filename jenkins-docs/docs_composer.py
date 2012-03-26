@@ -14,11 +14,10 @@ class DocsComposer(composer.Composer):
         if not exists('%(buildout-path)s/src/Naaya' % self.config):
             run("mkdir -p '%(buildout-path)s/src'" % self.config)
             with cd('%(buildout-path)s/src' % self.config):
-                run("git clone git://github.com/eaudeweb/Naaya.git -o github")
+                run("svn co '%(svn-url)s' Naaya" % self.config)
         else:
             with cd('%(buildout-path)s/src/Naaya' % self.config):
-                run("git fetch github")
-                run("git merge github/master --ff-only")
+                run("svn up")
 
     def deploy(self):
         self._naaya_src()

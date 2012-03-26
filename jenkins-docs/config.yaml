@@ -8,3 +8,5 @@ unix-user:
     edw
 composer:
     docs_composer.py:DocsComposer
+svn-url:
+    https://svn.eionet.europa.eu/repositories/Naaya/trunk/eggs/Naaya
