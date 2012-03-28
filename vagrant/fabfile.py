@@ -12,11 +12,10 @@ config = env['composer_config'] = {
     'fabdir': fabdir,
     'buildout-path': ppath('/var/local/naaya'),
     'unix-user': 'vagrant',
-    'svn-url': 'https://svn.eionet.europa.eu/repositories/Naaya/trunk/eggs/Naaya',
 }
 
 if not env['hosts']:
-    env['hosts'] = ['vagrant@192.168.13.28']
+    env['hosts'] = ['vagrant@192.168.13.29']
 env['key_filename'] = fabdir/'vagrant-id-rsa'
 
 
@@ -28,21 +27,5 @@ def initialize():
     execute(common.initialize)
 
 
-def _naaya_src():
-    if not exists('%(buildout-path)s/src/Naaya' % config):
-        run("mkdir -p '%(buildout-path)s/src'" % config)
-        with cd('%(buildout-path)s/src' % config):
-            run("git clone git://github.com/eaudeweb/Naaya.git -o github")
-    else:
-        with cd('%(buildout-path)s/src/Naaya' % config):
-            run("git fetch github")
-            run("git merge github/master --ff-only")
-
-
-@task
-def deploy():
-    _naaya_src()
-    execute(common.deploy)
-
-
 shell = common.shell
+deploy = common.deploy
