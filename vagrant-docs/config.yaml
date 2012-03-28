@@ -1,8 +1,0 @@
-host:
-    vagrant@192.168.13.28
-buildout-path:
-    /var/local/naaya
-unix-user:
-    vagrant
-composer:
-    docs_composer.py:DocsComposer
