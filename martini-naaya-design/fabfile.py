@@ -45,3 +45,9 @@ def deploy():
         paths = put('%(fabdir)s/buildout/*' % app, '.')
         run("'%(buildout-path)s/bin/python' bootstrap.py -d" % app)
         run("bin/buildout")
+
+
+@task
+def zopectl(cmd):
+    with cd(app['buildout-path']):
+        run("bin/zope-instance %s" % cmd)
