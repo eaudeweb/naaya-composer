@@ -1,12 +1,10 @@
-import imp
 from path import path as ppath
 from fabric.api import *
 from fabric.contrib.files import exists
 
 
-fabdir = ppath(__file__).abspath().dirname()
 app = env.app = {
-    'fabdir': fabdir,
+    'fabdir': ppath(__file__).abspath().dirname(),
     'buildout-path': ppath('/var/local/naaya-design'),
     'naaya-repo': 'https://github.com/eaudeweb/Naaya.git',
 }
