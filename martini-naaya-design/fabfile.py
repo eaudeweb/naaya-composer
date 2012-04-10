@@ -13,7 +13,7 @@ env['hosts'] = ['edw@martini.edw.ro']
 
 
 @task
-def shell():
+def ssh():
     open_shell("cd '%(buildout-path)s'" % app)
 
 
