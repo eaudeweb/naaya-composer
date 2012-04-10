@@ -40,7 +40,8 @@ def _git_repo(repo_path, origin_url, update=True):
 def deploy():
     if not exists(app['buildout-path']/'bin'/'python'):
         _virtualenv(app['buildout-path'])
-    _git_repo(app['buildout-path']/'src'/'Naaya', app['naaya-repo'])
+    _git_repo(app['buildout-path']/'src'/'Naaya', app['naaya-repo'],
+              update=False)
     with cd(app['buildout-path']):
         paths = put('%(fabdir)s/buildout/*' % app, '.')
         run("'%(buildout-path)s/bin/python' bootstrap.py -d" % app)
