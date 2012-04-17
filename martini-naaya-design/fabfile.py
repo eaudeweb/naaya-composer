@@ -35,18 +35,26 @@ def _git_repo(repo_path, origin_url, update=True):
 
 
 @task
-def deploy():
-    if not exists(app['buildout-path']/'bin'/'python'):
-        _virtualenv(app['buildout-path'])
-    _git_repo(app['buildout-path']/'src'/'Naaya', app['naaya-repo'],
-              update=False)
+def install():
+    run("mkdir -p '%(buildout-path)s'" % app)
+    _git_repo(app['buildout-path']/'src'/'Naaya', app['naaya-repo'], update=False)
     with cd(app['buildout-path']):
-        paths = put('%(fabdir)s/buildout/*' % app, '.')
-        run("'%(buildout-path)s/bin/python' bootstrap.py -d" % app)
+        put('%(fabdir)s/buildout/*' % app, '.')
+        if not exists(app['buildout-path']/'bin'/'python'):
+            _virtualenv('.')
+        if not exists(app['buildout-path']/'bin'/'buildout'):
+            run("bin/python bootstrap.py -d")
         run("bin/buildout")
 
 
 @task
 def zopectl(cmd):
     with cd(app['buildout-path']):
-        run("bin/zope-instance %s" % cmd)
+        run("bin/zope-instance %s" % cmd, pty=False)
+
+
+@task
+def deploy():
+    execute('install')
+    execute('zopectl', 'stop')
+    execute('zopectl', 'start')
