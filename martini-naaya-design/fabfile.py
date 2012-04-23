@@ -70,3 +70,8 @@ def deploy():
     execute('install')
     execute('zopectl', 'stop')
     execute('zopectl', 'start')
+
+@task
+def restart():
+    execute('zopectl', 'stop')
+    execute('zopectl', 'start')
