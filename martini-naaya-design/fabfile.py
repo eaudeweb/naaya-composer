@@ -7,6 +7,7 @@ app = env.app = {
     'fabdir': ppath(__file__).abspath().dirname(),
     'buildout-path': ppath('/var/local/naaya-design'),
     'naaya-repo': 'https://github.com/eaudeweb/Naaya.git',
+    'talkback-repo': 'https://svn.eionet.europa.eu/repositories/Naaya/trunk/eggs/naaya.content.talkback',
 }
 
 env['hosts'] = ['edw@martini.edw.ro']
@@ -33,11 +34,22 @@ def _git_repo(repo_path, origin_url, update=True):
             run("git fetch origin")
             run("git merge origin/master --ff-only")
 
+def _svn_repo(repo_path, origin_url, update=True):
+    if not exists(repo_path/'.svn'):
+        run("mkdir -p '%s'" % repo_path)
+        with cd(repo_path):
+            run("svn co '%s' ." % origin_url)
+
+    elif update:
+        with cd(repo_path):
+            run("svn up")
 
 @task
 def install():
     run("mkdir -p '%(buildout-path)s'" % app)
     _git_repo(app['buildout-path']/'src'/'Naaya', app['naaya-repo'], update=False)
+    _svn_repo(app['buildout-path']/'src'/'naaya.content.talkback',
+            app['talkback-repo'], update=False)
     with cd(app['buildout-path']):
         put('%(fabdir)s/buildout/*' % app, '.')
         if not exists(app['buildout-path']/'bin'/'python'):
