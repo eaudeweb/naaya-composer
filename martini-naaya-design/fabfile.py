@@ -8,6 +8,8 @@ app = env.app = {
     'buildout-path': ppath('/var/local/naaya-design'),
     'naaya-repo': 'https://github.com/eaudeweb/Naaya.git',
     'talkback-repo': 'https://svn.eionet.europa.eu/repositories/Naaya/trunk/eggs/naaya.content.talkback',
+    'photoarchive-repo': 'https://svn.eionet.europa.eu/repositories/Naaya/trunk/eggs/naaya.photoarchive',
+    'forum-repo': 'https://svn.eionet.europa.eu/repositories/Naaya/trunk/eggs/Products.NaayaForum',
 }
 
 env['hosts'] = ['edw@martini.edw.ro']
@@ -48,8 +50,10 @@ def _svn_repo(repo_path, origin_url, update=True):
 def install():
     run("mkdir -p '%(buildout-path)s'" % app)
     _git_repo(app['buildout-path']/'src'/'Naaya', app['naaya-repo'], update=False)
-    _svn_repo(app['buildout-path']/'src'/'naaya.content.talkback',
-            app['talkback-repo'], update=False)
+    _svn_repo(app['buildout-path']/'src'/'naaya.photoarchive',
+            app['photoarchive-repo'], update=False)
+    _svn_repo(app['buildout-path']/'src'/'Products.NaayaForum',
+            app['forum-repo'], update=False)
     with cd(app['buildout-path']):
         put('%(fabdir)s/buildout/*' % app, '.')
         if not exists(app['buildout-path']/'bin'/'python'):
