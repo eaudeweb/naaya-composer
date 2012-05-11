@@ -1,4 +1,3 @@
-import imp
 from path import path as ppath
 from fabric.api import *
 from fabric.contrib.files import exists
