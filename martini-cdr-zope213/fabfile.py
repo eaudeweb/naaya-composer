@@ -53,3 +53,8 @@ def deploy():
         with cd(app['buildout-path']/'products'):
             url = "http://eggshop.eaudeweb.ro/LDAPUserFolder-cdr2.tgz"
             run("curl '%s' | tar xzf -" % url)
+
+@task
+def zopectl(cmd):
+    with cd(app['buildout-path']):
+        run("bin/zope-instance %s" % cmd, pty=False)
