@@ -4,11 +4,11 @@ from fabric.contrib.files import exists
 
 
 fabdir = path(__file__).abspath().dirname()
+svn_repo = 'https://svn.eionet.europa.eu/repositories/Zope'
 app = env.app = {
     'fabdir': fabdir,
     'buildout-path': path('/var/local/cdr-zope213'),
-    'reportek-repo': ('https://svn.eionet.europa.eu/repositories'
-                      '/Zope/trunk/Products.Reportek'),
+    'reportek-repo': svn_repo + '/trunk/Products.Reportek',
 }
 
 env['hosts'] = ['edw@martini.edw.ro']
@@ -43,6 +43,14 @@ def _svn_repo(repo_path, origin_url, update=True):
             run("svn up")
 
 
+def _product(product_path, tgz_url):
+    if not exists(product_path.parent):
+        run("mkdir -p '%s'" % product_path.parent)
+    if not exists(app['buildout-path']/'products'/product_path):
+        with cd(app['buildout-path']/'products'):
+            run("curl '%s' | tar xzf -" % tgz_url)
+
+
 @task
 def ssh():
     open_shell("cd '%(buildout-path)s'" % app)
@@ -52,17 +60,21 @@ def ssh():
 def deploy():
     if not exists(app['buildout-path']/'bin'/'python'):
         _virtualenv(app['buildout-path'])
+
+    products_path = app['buildout-path']/'products'
     _svn_repo(app['buildout-path']/'src'/'Products.Reportek',
               app['reportek-repo'])
+    _product(products_path/'LDAPUserFolder',
+             "http://eggshop.eaudeweb.ro/LDAPUserFolder-cdr2.tgz")
+    _svn_repo(products_path/'XMLRPCMethod',     svn_repo + '/trunk/XMLRPCMethod')
+    _svn_repo(products_path/'SmallObligations', svn_repo + '/trunk/SmallObligations')
+    _svn_repo(products_path/'RDFGrabber',       svn_repo + '/trunk/RDFGrabber')
+
     with cd(app['buildout-path']):
         paths = put('%(fabdir)s/buildout/*' % app, '.')
         run("'%(buildout-path)s/bin/python' bootstrap.py -d" % app)
         run("bin/buildout")
-    if not exists(app['buildout-path']/'products'):
-        run("mkdir '%(buildout-path)s/products'" % app)
-        with cd(app['buildout-path']/'products'):
-            url = "http://eggshop.eaudeweb.ro/LDAPUserFolder-cdr2.tgz"
-            run("curl '%s' | tar xzf -" % url)
+
 
 @task
 def zopectl(cmd):
