@@ -7,8 +7,8 @@ fabdir = path(__file__).abspath().dirname()
 app = env.app = {
     'fabdir': fabdir,
     'buildout-path': path('/var/local/cdr-zope213'),
-    'reportek-repo': 'https://github.com/eaudeweb/Products.Reportek.git',
-    'reportek-branch': 'alexm-zope213',
+    'reportek-repo': ('https://svn.eionet.europa.eu/repositories'
+                      '/Zope/trunk/Products.Reportek'),
 }
 
 env['hosts'] = ['edw@martini.edw.ro']
@@ -32,6 +32,17 @@ def _git_repo(repo_path, origin_url, update=True, branch='master'):
             run("git merge origin/%s --ff-only" % branch)
 
 
+def _svn_repo(repo_path, origin_url, update=True):
+    if not exists(repo_path/'.svn'):
+        run("mkdir -p '%s'" % repo_path)
+        with cd(repo_path):
+            run("svn co '%s' ." % origin_url)
+
+    elif update:
+        with cd(repo_path):
+            run("svn up")
+
+
 @task
 def ssh():
     open_shell("cd '%(buildout-path)s'" % app)
@@ -41,9 +52,8 @@ def ssh():
 def deploy():
     if not exists(app['buildout-path']/'bin'/'python'):
         _virtualenv(app['buildout-path'])
-    _git_repo(app['buildout-path']/'src'/'Products.Reportek',
-              app['reportek-repo'],
-              branch=app['reportek-branch'])
+    _svn_repo(app['buildout-path']/'src'/'Products.Reportek',
+              app['reportek-repo'])
     with cd(app['buildout-path']):
         paths = put('%(fabdir)s/buildout/*' % app, '.')
         run("'%(buildout-path)s/bin/python' bootstrap.py -d" % app)
