@@ -63,7 +63,8 @@ def deploy():
 
     products_path = app['buildout-path']/'products'
     _svn_repo(app['buildout-path']/'src'/'Products.Reportek',
-              app['reportek-repo'])
+              app['reportek-repo'],
+              update=False)
     _product(products_path/'LDAPUserFolder',
              "http://eggshop.eaudeweb.ro/LDAPUserFolder-cdr2.tgz")
     _svn_repo(products_path/'XMLRPCMethod',     svn_repo + '/trunk/XMLRPCMethod')
