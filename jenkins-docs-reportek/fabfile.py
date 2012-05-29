@@ -6,7 +6,7 @@ from fabric.contrib.files import exists
 fabdir = path(__file__).abspath().dirname()
 app = env.app = {
     'fabdir': fabdir,
-    'buildout-path': path('/var/lib/jenkins/jobs/Reportek-docs-zope210/workspace'),
+    'buildout-path': path('/var/lib/jenkins/jobs/Reportek-docs-zope213/workspace'),
     'reportek-repo': 'https://svn.eionet.europa.eu/repositories/Zope/trunk/Products.Reportek/',
 }
 
@@ -37,11 +37,12 @@ def ssh():
 @task
 def deploy():
     if not exists(app['buildout-path']/'bin'/'python'):
-        _virtualenv(app['buildout-path'], python_bin='python2.4')
+        _virtualenv(app['buildout-path'])
     _svn_repo(app['buildout-path']/'src'/'Products.Reportek',
               app['reportek-repo'])
     with cd(app['buildout-path']):
         paths = put('%(fabdir)s/buildout/*' % app, '.')
+        run("curl -O 'http://eggshop.eaudeweb.ro/bootstrap.py'")
         run("'%(buildout-path)s/bin/python' bootstrap.py -d" % app)
         run("bin/buildout")
 
