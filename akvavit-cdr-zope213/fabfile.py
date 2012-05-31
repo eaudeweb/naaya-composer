@@ -61,8 +61,6 @@ def deploy():
     _svn_repo(app['buildout-path']/'src'/'Products.Reportek',
               app['reportek-repo'],
               update=False)
-    _product(products_path/'LDAPUserFolder',
-             "http://eggshop.eaudeweb.ro/LDAPUserFolder-cdr2.tgz")
     _svn_repo(products_path/'XMLRPCMethod',     svnurl+'/trunk/XMLRPCMethod')
     _svn_repo(products_path/'SmallObligations', svnurl+'/trunk/SmallObligations')
     _svn_repo(products_path/'RDFGrabber',       svnurl+'/trunk/RDFGrabber')
