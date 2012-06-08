@@ -11,9 +11,7 @@ app = env.app = {
     'reportek-repo': svnurl + '/trunk/Products.Reportek',
 }
 
-#env['hosts'] = ['edw@akvavit.edw.ro']
-env['use_ssh_config'] = True
-env['hosts'] = ['edw@akvavit']
+env['hosts'] = ['edw@akvavit.edw.ro']
 
 
 ### debian packages:
