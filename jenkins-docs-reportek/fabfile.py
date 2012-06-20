@@ -4,17 +4,19 @@ from fabric.contrib.files import exists
 
 
 fabdir = path(__file__).abspath().dirname()
-app = env.app = {
+svn_repo = 'https://svn.eionet.europa.eu/repositories/Zope'
+app = {
     'fabdir': fabdir,
     'buildout-path': path('/var/lib/jenkins/jobs/Reportek-docs-zope213/workspace'),
-    'reportek-repo': 'https://svn.eionet.europa.eu/repositories/Zope/trunk/Products.Reportek/',
+    'reportek-repo': svn_repo + '/trunk/Products.Reportek',
+    'python-bin': path('/usr/local/Python-2.7.3/bin/python'),
 }
 
 env['hosts'] = ['edw@power.edw.ro']
 
 
 def _virtualenv(venv_path, python_bin='python2.6'):
-    run("virtualenv %s --no-site-packages --distribute --python=%s" %
+    run("virtualenv '%s' --no-site-packages --distribute --python='%s'" %
         (venv_path, python_bin))
 
 
@@ -37,12 +39,12 @@ def ssh():
 @task
 def deploy():
     if not exists(app['buildout-path']/'bin'/'python'):
-        _virtualenv(app['buildout-path'])
+        _virtualenv(app['buildout-path'], app['python-bin'])
     _svn_repo(app['buildout-path']/'src'/'Products.Reportek',
-              app['reportek-repo'])
+              app['reportek-repo'],
+              update=False)
     with cd(app['buildout-path']):
-        paths = put('%(fabdir)s/buildout/*' % app, '.')
+        put('%(fabdir)s/buildout/*' % app, '.')
         run("curl -O 'http://eggshop.eaudeweb.ro/bootstrap.py'")
         run("'%(buildout-path)s/bin/python' bootstrap.py -d" % app)
         run("bin/buildout")
-
