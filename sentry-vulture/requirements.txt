@@ -22,3 +22,5 @@ pytz==2012c
 raven==2.0.3
 sentry==4.8.2
 simplejson==2.4.0
+django-auth-ldap==1.1.1
+python-ldap==2.4.10
