@@ -1,6 +1,8 @@
 import os
 import os.path
 import json
+import ldap
+from django_auth_ldap.config import LDAPSearch
 
 
 with open(os.environ['SARGEAPP_CFG'], 'rb') as f:
@@ -39,3 +41,22 @@ EMAIL_PORT = 25
 EMAIL_USE_TLS = False
 
 SENTRY_MAIL_LEVEL = 100
+
+
+AUTH_LDAP_SERVER_URI = "ldap://ldap3.eionet.europa.eu"
+AUTH_LDAP_BIND_DN = ""
+AUTH_LDAP_BIND_PASSWORD = ""
+
+AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=Users,o=EIONET,l=Europe",
+                                   ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
+
+AUTH_LDAP_USER_ATTR_MAP = {
+    "first_name": "givenName",
+    "last_name": "sn",
+    "email": "mail",
+}
+
+AUTHENTICATION_BACKENDS = (
+    'django_auth_ldap.backend.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
