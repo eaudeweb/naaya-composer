@@ -40,8 +40,6 @@ EMAIL_HOST_USER = ''
 EMAIL_PORT = 25
 EMAIL_USE_TLS = False
 
-SENTRY_MAIL_LEVEL = 100
-
 
 AUTH_LDAP_SERVER_URI = "ldap://ldap3.eionet.europa.eu"
 AUTH_LDAP_BIND_DN = ""
