@@ -1,4 +1,4 @@
-Fabric==1.4.1
-path.py==2.2.2
-pycrypto==2.5
-ssh==1.7.13
+Fabric==1.8.0
+path.py==5.0
+pycrypto==2.6.1
+ssh==1.8.0
